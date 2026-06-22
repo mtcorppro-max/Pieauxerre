@@ -1,11 +1,11 @@
 {
   "crons": [
     {
-      "path": "/api/import-my89?secret=yonne-plus-import-2026",
+      "path": "/api/import-my89?secret=pieyonne-import-2026",
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/update-recurring?secret=yonne-plus-import-2026",
+      "path": "/api/update-recurring?secret=pieyonne-import-2026",
       "schedule": "0 4 * * *"
     }
   ]
