@@ -1,0 +1,285 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles Leaflet (sélecteur de lieu du formulaire) */
+@import "leaflet/dist/leaflet.css";
+/* Styles MapLibre GL (carte 3D principale) */
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+:root {
+  --primary: #1d4ed8;
+}
+
+/* Cache la scrollbar (scroll horizontal chips) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Slider rayon agenda */
+.rayon-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  outline: none;
+  cursor: pointer;
+}
+.rayon-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1d4ed8;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(29,78,216,0.15);
+  transition: box-shadow 0.15s;
+}
+.rayon-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1d4ed8;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(29,78,216,0.15);
+}
+.rayon-slider:active::-webkit-slider-thumb {
+  box-shadow: 0 0 0 5px rgba(29,78,216,0.25);
+}
+
+/* Champs de formulaire — larges et lisibles (accessibilité) */
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/30;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-white text-slate-800;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Liquid glass (navbar, cartes, boutons du hero) ----------------------- */
+.liquid-glass {
+  background: rgba(0, 0, 0, 0.4);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.1) 80%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* La carte plein écran ne doit jamais déborder */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  font-family: inherit;
+  background: #eef2f7;
+}
+
+/* Marqueurs emoji (divIcon) -------------------------------------------- */
+/* Conteneur du divIcon : aucun style (remplace .leaflet-div-icon) */
+.emoji-divicon {
+  background: transparent;
+  border: 0;
+}
+
+@property --marker-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.emoji-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  font-size: 22px;
+  line-height: 1;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.emoji-marker::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--marker-angle),
+    #3b82f6 0deg,
+    #93c5fd 40deg,
+    transparent 70deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: marker-border-spin 3s linear infinite;
+  z-index: -1;
+}
+
+@keyframes marker-border-spin {
+  to { --marker-angle: 360deg; }
+}
+
+/* Badge événement/promo sur un marqueur POI */
+.emoji-badge {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.3);
+}
+
+.emoji-badge--promo {
+  animation: badge-pulse 1.2s ease-in-out infinite;
+}
+
+.emoji-badge--event {
+  animation: badge-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+@keyframes badge-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.emoji-marker:hover {
+  transform: scale(1.1);
+}
+
+/* Halo bleu léger pour les événements du jour */
+.emoji-marker--today {
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.25), 0 2px 8px rgba(15, 23, 42, 0.25);
+}
+
+/* Promo active : pulse orange */
+.emoji-marker--promo {
+  border-color: #f97316;
+  animation: promo-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes promo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.55), 0 2px 8px rgba(15, 23, 42, 0.25);
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 8px rgba(249, 115, 22, 0), 0 2px 8px rgba(15, 23, 42, 0.25);
+  }
+}
+
+/* Popup MapLibre — bordure animée bleue */
+@property --popup-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.maplibregl-popup-content {
+  position: relative;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 28px rgba(15, 23, 42, 0.18) !important;
+  padding: 14px 16px !important;
+  overflow: visible !important;
+}
+
+.maplibregl-popup-content::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 16px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--popup-angle),
+    #3b82f6 0deg,
+    #93c5fd 40deg,
+    transparent 70deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: popup-border-spin 3s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes popup-border-spin {
+  to { --popup-angle: 360deg; }
+}
+
+/* Popups Leaflet — coins arrondis, look épuré */
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 6px 28px rgba(15, 23, 42, 0.18);
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Accessibilité : focus visible et net */
+*:focus-visible {
+  outline: 3px solid rgba(29, 78, 216, 0.5);
+  outline-offset: 2px;
+}

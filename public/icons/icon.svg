@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#1D4ED8"/>
+  <!-- Marqueur carte stylisé -->
+  <path d="M256 104c-66 0-120 53-120 119 0 84 105 173 113 180a11 11 0 0 0 14 0c8-7 113-96 113-180 0-66-54-119-120-119z" fill="#ffffff"/>
+  <circle cx="256" cy="223" r="48" fill="#1D4ED8"/>
+</svg>

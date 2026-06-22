@@ -1,0 +1,66 @@
+{
+  "name": "PieYonne — la carte citoyenne",
+  "short_name": "PieYonne",
+  "description": "Événements, bons plans et signalements à Auxerre. Gratuit, sans pub.",
+  "lang": "fr",
+  "start_url": "/carte",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1D4ED8",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Sorties",
+      "short_name": "Sorties",
+      "url": "/liste",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Proposer une idée",
+      "short_name": "Idée",
+      "url": "/soumettre?type=idee",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Entraide",
+      "short_name": "Entraide",
+      "url": "/entraide",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["lifestyle", "navigation", "social"]
+}
