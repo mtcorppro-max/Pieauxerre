@@ -2,56 +2,21 @@ import Link from "next/link";
 import FadeIn from "./hero/FadeIn";
 import AnimatedHeading from "./hero/AnimatedHeading";
 import HeroSlideshow from "./hero/HeroSlideshow";
+import HeroNav from "./hero/HeroNav";
 import WeatherPill from "./WeatherPill";
-
-// Hero plein écran : photo d'Auxerre en fond (brut, sans overlay),
-// navbar et cartes en "liquid glass", animations d'entrée échelonnées.
-const NAV_LINKS = [
-  { label: "Pourquoi ?", href: "/pourquoi" },
-  { label: "Sorties", href: "/liste" },
-  { label: "Entraide", href: "/entraide" },
-
-  { label: "Perdus & Trouvés", href: "/trouvailles" },
-  { label: "💡 Idées & signalements", href: "/idees" },
-];
 
 export default function Hero() {
   return (
     <section className="relative h-screen min-h-[600px] w-full overflow-hidden text-white">
       <HeroSlideshow />
 
-      {/* Dégradés de lisibilité (photo claire) : la photo reste nette en haut,
-          le texte du bas ressort sur un fond assombri. */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 to-transparent" />
 
       {/* Contenu */}
       <div className="relative z-10 flex h-full flex-col">
         {/* Navbar */}
-        <div className="px-6 pt-6 md:px-12 lg:px-16">
-          <nav className="liquid-glass flex items-center justify-between rounded-xl px-4 py-2">
-            <Link href="/" className="text-2xl font-semibold tracking-tight">
-              PieYonne
-            </Link>
-            <div className="hidden items-center gap-8 text-sm md:flex">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.label}
-                  href={l.href}
-                  className="transition-colors hover:text-gray-300"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/carte"
-              className="rounded-lg bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
-            >
-              Ouvrir la carte
-            </Link>
-          </nav>
-        </div>
+        <HeroNav />
 
         {/* Bas du hero */}
         <div className="flex flex-1 flex-col justify-end px-5 pb-8 md:px-12 md:pb-12 lg:px-16 lg:pb-16">
