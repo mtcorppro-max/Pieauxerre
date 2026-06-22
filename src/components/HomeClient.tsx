@@ -87,7 +87,12 @@ export default function HomeClient() {
   }, [points]);
 
   const visiblePoints = useMemo(
-    () => points.filter((p) => active[p.layer]),
+    () => points.filter(
+      (p) => active[p.layer] &&
+        p.lat != null && p.lng != null &&
+        isFinite(p.lat) && isFinite(p.lng) &&
+        p.lat !== 0 && p.lng !== 0
+    ),
     [points, active]
   );
 

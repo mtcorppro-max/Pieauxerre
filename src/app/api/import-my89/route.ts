@@ -48,8 +48,21 @@ function slugToCategory(slug: string): string {
   return "autre";
 }
 
-// Géocode une commune via l'API adresse du gouvernement français
-async function geocodeCommune(commune: string): Promise<{ lat: number; lng: number } | null> {
+// Géocode via Nominatim (POIs + adresses précises), fallback commune
+async function geocodeLocation(lieu: string, commune: string): Promise<{ lat: number; lng: number } | null> {
+  // Essai précis : lieu + commune (trouve théâtres, salles, etc.)
+  if (lieu && lieu !== commune) {
+    try {
+      const q = encodeURIComponent(`${lieu}, ${commune}, France`);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${q}&countrycodes=fr&viewbox=2.80,48.45,4.35,47.25&bounded=1`,
+        { headers: { "User-Agent": "Yonne+/1.0 contact@yonne-plus.fr" }, signal: AbortSignal.timeout(4000) }
+      );
+      const data = await res.json();
+      if (data[0]) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+    } catch { /* passe au fallback */ }
+  }
+  // Fallback : centre de commune
   try {
     const query = encodeURIComponent(`${commune}, Yonne`);
     const res = await fetch(
@@ -115,11 +128,12 @@ export async function GET(req: Request) {
       const commune = ville || parseCommune(lieuTexte);
       const categorie = slugToCategory(slug);
 
-      // Géocode avec cache pour éviter les doublons d'appels
-      if (commune && !geocodeCache[commune]) {
-        geocodeCache[commune] = await geocodeCommune(commune);
+      // Clé de cache = lieu+commune pour profiter des coordonnées précises
+      const cacheKey = lieuNom ? `${lieuNom}|${commune}` : commune;
+      if (commune && !geocodeCache[cacheKey]) {
+        geocodeCache[cacheKey] = await geocodeLocation(lieuNom, commune);
       }
-      const coords = commune ? geocodeCache[commune] : null;
+      const coords = commune ? geocodeCache[cacheKey] : null;
       if (!coords) continue;
 
       events.push({
