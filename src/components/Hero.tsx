@@ -58,16 +58,6 @@ export default function Hero() {
               </FadeIn>
             </div>
 
-            {/* Colonne droite */}
-            <div className="mt-8 flex items-end justify-start lg:mt-0 lg:justify-end">
-              <FadeIn delay={1400} duration={1000}>
-                <div className="liquid-glass rounded-xl border border-white/20 px-6 py-3">
-                  <span className="text-lg font-light md:text-xl lg:text-2xl">
-                    Événements. Bons plans. Idées.
-                  </span>
-                </div>
-              </FadeIn>
-            </div>
           </div>
         </div>
       </div>
