@@ -100,30 +100,31 @@ export default function Map3D({ points }: Map3DProps) {
     markersRef.current.forEach((m) => m.remove());
     markersRef.current = [];
 
+    // Beaucoup d'événements partagent le centre de leur commune : on éventaille
+    // les marqueurs superposés en spirale pour qu'ils soient tous cliquables.
+    const seen = new Map<string, number>();
+    const COS_LAT = Math.cos((AUXERRE_CENTER[0] * Math.PI) / 180);
+
     for (const p of points) {
+      const key = `${p.lng.toFixed(4)},${p.lat.toFixed(4)}`;
+      const idx = seen.get(key) ?? 0;
+      seen.set(key, idx + 1);
+
+      let lng = p.lng;
+      let lat = p.lat;
+      if (idx > 0) {
+        const angle = idx * 2.399963; // angle d'or → répartition régulière
+        const radius = 0.0011 * Math.sqrt(idx);
+        lng += (radius / COS_LAT) * Math.cos(angle);
+        lat += radius * Math.sin(angle);
+      }
+
       const el = markerElement(p);
       const popup = new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(popupHtml(p));
       const marker = new maplibregl.Marker({ element: el, anchor: "center" })
-        .setLngLat([p.lng, p.lat])
+        .setLngLat([lng, lat])
         .setPopup(popup)
         .addTo(map);
-
-      // Sur mobile, les touch events ne déclenchent pas toujours le click natif
-      // de MapLibre — on force l'ouverture du popup au touchend si pas de mouvement.
-      let moved = false;
-      el.addEventListener("touchstart", () => { moved = false; }, { passive: true });
-      el.addEventListener("touchmove", () => { moved = true; }, { passive: true });
-      el.addEventListener("touchend", (e) => {
-        if (!moved) {
-          e.preventDefault();
-          e.stopPropagation();
-          marker.togglePopup();
-        }
-      });
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        marker.togglePopup();
-      });
 
       markersRef.current.push(marker);
     }
