@@ -11,17 +11,13 @@ import {
 } from "@/lib/config";
 import type { MapPoint } from "@/lib/types";
 
-// Tuiles vectorielles gratuites (sans clé API) — rues modernes + hauteurs bâtiments.
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 
-// Conversions Leaflet (lat,lng) -> MapLibre (lng,lat)
 const CENTER: [number, number] = [AUXERRE_CENTER[1], AUXERRE_CENTER[0]];
 const BOUNDS: [[number, number], [number, number]] = [
-  [AUXERRE_BOUNDS[0][1], AUXERRE_BOUNDS[0][0]], // sud-ouest [lng,lat]
-  [AUXERRE_BOUNDS[1][1], AUXERRE_BOUNDS[1][0]], // nord-est [lng,lat]
+  [AUXERRE_BOUNDS[0][1], AUXERRE_BOUNDS[0][0]],
+  [AUXERRE_BOUNDS[1][1], AUXERRE_BOUNDS[1][0]],
 ];
-
-const DEFAULT_PITCH = 50;
 
 function markerElement(point: MapPoint): HTMLElement {
   const el = document.createElement("div");
@@ -35,6 +31,12 @@ function markerElement(point: MapPoint): HTMLElement {
 }
 
 const CHEVRON_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>`;
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string
+  );
+}
 
 function popupHtml(point: MapPoint): string {
   const sous = point.sousTitre
@@ -54,46 +56,6 @@ function popupHtml(point: MapPoint): string {
     </div>`;
 }
 
-function escapeHtml(s: string): string {
-  return s.replace(/[&<>"]/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string
-  );
-}
-
-// Ajoute une couche d'extrusion 3D des bâtiments si le style ne l'a pas déjà.
-function add3dBuildings(map: MlMap) {
-  const style = map.getStyle();
-  const hasExtrusion = style.layers?.some((l) => l.type === "fill-extrusion");
-  if (hasExtrusion) return;
-
-  // Trouve la 1re couche de libellés pour insérer les bâtiments en dessous.
-  const firstSymbol = style.layers?.find((l) => l.type === "symbol")?.id;
-  try {
-    map.addLayer(
-      {
-        id: "auxerre-3d-buildings",
-        source: "openmaptiles",
-        "source-layer": "building",
-        type: "fill-extrusion",
-        minzoom: 14,
-        paint: {
-          "fill-extrusion-color": "#d9dee8",
-          "fill-extrusion-height": [
-            "interpolate", ["linear"], ["zoom"],
-            14, 0,
-            15.5, ["coalesce", ["get", "render_height"], 6],
-          ],
-          "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
-          "fill-extrusion-opacity": 0.9,
-        },
-      },
-      firstSymbol
-    );
-  } catch {
-    /* la source n'existe pas dans ce style : on ignore */
-  }
-}
-
 interface Map3DProps {
   points: MapPoint[];
 }
@@ -102,12 +64,8 @@ export default function Map3D({ points }: Map3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
   const markersRef = useRef<MlMarker[]>([]);
-  const orbitRef = useRef<number | null>(null);
   const [ready, setReady] = useState(false);
-  const [is3d, setIs3d] = useState(true);
-  const [orbiting, setOrbiting] = useState(false);
 
-  // Initialisation de la carte (une seule fois)
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
@@ -118,33 +76,23 @@ export default function Map3D({ points }: Map3DProps) {
       zoom: DEFAULT_ZOOM,
       minZoom: MIN_ZOOM,
       maxZoom: MAX_ZOOM,
-      pitch: DEFAULT_PITCH,
-      bearing: -18,
+      pitch: 0,
+      bearing: 0,
       maxBounds: BOUNDS,
       attributionControl: { compact: true },
-      dragRotate: true,
+      dragRotate: false,
       cooperativeGestures: false,
     });
     mapRef.current = map;
 
-    map.on("load", () => {
-      add3dBuildings(map);
-      setReady(true);
-    });
-
-    map.on("mousedown", stopOrbit);
-    map.on("touchstart", stopOrbit);
-    map.on("wheel", stopOrbit);
+    map.on("load", () => setReady(true));
 
     return () => {
-      stopOrbit();
       map.remove();
       mapRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // (Re)place les marqueurs quand les points changent
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
@@ -161,89 +109,41 @@ export default function Map3D({ points }: Map3DProps) {
     }
   }, [points, ready]);
 
-  function stopOrbit() {
-    if (orbitRef.current !== null) {
-      cancelAnimationFrame(orbitRef.current);
-      orbitRef.current = null;
-    }
-    setOrbiting(false);
-  }
-
-  function toggleOrbit() {
-    const map = mapRef.current;
-    if (!map) return;
-    if (orbitRef.current !== null) {
-      stopOrbit();
-      return;
-    }
-    setOrbiting(true);
-    const step = () => {
-      map.setBearing(map.getBearing() + 0.25);
-      orbitRef.current = requestAnimationFrame(step);
-    };
-    orbitRef.current = requestAnimationFrame(step);
-  }
-
-  function toggle3d() {
-    const map = mapRef.current;
-    if (!map) return;
-    const next = !is3d;
-    setIs3d(next);
-    map.easeTo({ pitch: next ? DEFAULT_PITCH : 0, bearing: next ? -18 : 0, duration: 700 });
-  }
-
   return (
     <div className="relative h-full w-full">
       <div ref={containerRef} className="h-full w-full" style={{ touchAction: "none" }} />
 
-      {/* Bandeau d'aide */}
-      <div className="pointer-events-none absolute bottom-3 left-1/2 z-[500] -translate-x-1/2">
-        <div className="flex items-center gap-2 rounded-full bg-slate-900/80 px-4 py-2 text-xs font-medium text-white backdrop-blur">
-          <span className="h-2 w-2 rounded-full bg-green-400" />
-          <span className="font-semibold">Auxerre 3D</span>
-          <span className="hidden text-slate-300 sm:inline">
-            molette : zoom · glisser : déplacer · clic droit : incliner
-          </span>
-        </div>
-      </div>
-
-      {/* Contrôles (droite) */}
+      {/* Contrôles zoom */}
       <div className="absolute right-3 top-1/2 z-[500] flex -translate-y-1/2 flex-col gap-2">
-        <CtrlBtn label="Zoomer" onClick={() => mapRef.current?.zoomIn()}>+</CtrlBtn>
-        <CtrlBtn label="Dézoomer" onClick={() => mapRef.current?.zoomOut()}>−</CtrlBtn>
-        <CtrlBtn label={is3d ? "Vue du dessus" : "Vue 3D"} onClick={toggle3d}>
-          {is3d ? "2D" : "3D"}
-        </CtrlBtn>
-        <CtrlBtn label="Orbite" active={orbiting} onClick={toggleOrbit}>
-          ⟳
-        </CtrlBtn>
+        <button
+          type="button"
+          aria-label="Zoomer"
+          onClick={() => mapRef.current?.zoomIn()}
+          className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/95 text-xl font-semibold shadow-soft backdrop-blur active:scale-95"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          aria-label="Dézoomer"
+          onClick={() => mapRef.current?.zoomOut()}
+          className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/95 text-xl font-semibold shadow-soft backdrop-blur active:scale-95"
+        >
+          −
+        </button>
+        <button
+          type="button"
+          aria-label="Ma position"
+          onClick={() => {
+            navigator.geolocation?.getCurrentPosition((pos) => {
+              mapRef.current?.flyTo({ center: [pos.coords.longitude, pos.coords.latitude], zoom: 14 });
+            });
+          }}
+          className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/95 text-lg shadow-soft backdrop-blur active:scale-95"
+        >
+          📍
+        </button>
       </div>
     </div>
-  );
-}
-
-function CtrlBtn({
-  children,
-  label,
-  active,
-  onClick,
-}: {
-  children: React.ReactNode;
-  label: string;
-  active?: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      onClick={onClick}
-      className={[
-        "flex h-11 w-11 items-center justify-center rounded-xl text-lg font-semibold shadow-soft backdrop-blur transition active:scale-95",
-        active ? "bg-primary text-white" : "bg-white/95 text-slate-700 hover:bg-white",
-      ].join(" ")}
-    >
-      {children}
-    </button>
   );
 }
