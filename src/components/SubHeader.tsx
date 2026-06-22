@@ -7,7 +7,7 @@ export default function SubHeader({ title }: { title: string }) {
       <Link
         href="/carte"
         aria-label="Retour à la carte"
-        className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700 active:scale-95"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700 active:scale-95"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />

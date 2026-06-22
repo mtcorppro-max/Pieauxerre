@@ -73,7 +73,7 @@ export default function ListClient() {
       <div className="bg-white px-4 pb-4 pt-5 md:px-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Les sorties à Auxerre</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Les sorties dans l'Yonne</h1>
             <p className="mt-0.5 text-sm text-slate-500">
               {tab === "promos" ? `${promos.length} bon${promos.length > 1 ? "s" : ""} plan${promos.length > 1 ? "s" : ""}` : `${filtered.length} événement${filtered.length > 1 ? "s" : ""}`} trouvé{filtered.length > 1 || (tab === "promos" && promos.length > 1) ? "s" : ""}
             </p>

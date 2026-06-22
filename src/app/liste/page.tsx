@@ -4,13 +4,13 @@ import ListClient from "@/components/ListClient";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Ce qui se passe à Auxerre — événements & promos",
+  title: "Sorties dans l'Yonne — événements & promos",
 };
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <SubHeader title="À Auxerre en ce moment" />
+      <SubHeader title="Sorties dans l'Yonne" />
       <ListClient />
     </div>
   );

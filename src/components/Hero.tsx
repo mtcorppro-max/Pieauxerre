@@ -54,37 +54,38 @@ export default function Hero() {
         </div>
 
         {/* Bas du hero */}
-        <div className="flex flex-1 flex-col justify-end px-6 pb-12 md:px-12 lg:px-16 lg:pb-16">
+        <div className="flex flex-1 flex-col justify-end px-5 pb-8 md:px-12 md:pb-12 lg:px-16 lg:pb-16">
           <div className="lg:grid lg:grid-cols-2 lg:items-end">
             {/* Colonne gauche */}
             <div>
               <FadeIn delay={400} duration={800}>
-                <WeatherPill />
+                <div className="mb-3">
+                  <WeatherPill />
+                </div>
               </FadeIn>
               <AnimatedHeading
                 text={"Votre ville,\nen temps réel."}
-                className="mb-4 text-4xl font-normal drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] md:text-5xl lg:text-6xl xl:text-7xl"
+                className="mb-3 text-3xl font-normal drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
                 style={{ letterSpacing: "-0.04em" }}
               />
 
               <FadeIn delay={800} duration={1000}>
-                <p className="mb-5 max-w-xl text-base text-gray-200 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:text-lg">
-                  Événements, bons plans des bars et restos, commerces ouverts et vos
-                  idées — tout sur une seule carte.
+                <p className="mb-4 max-w-xl text-sm text-gray-200 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg">
+                  Événements, bons plans, marchés, idées — tout sur une seule carte.
                 </p>
               </FadeIn>
 
               <FadeIn delay={1200} duration={1000}>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   <Link
                     href="/carte"
-                    className="rounded-lg bg-white px-8 py-3 font-medium text-black transition-colors hover:bg-gray-100"
+                    className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-gray-100 sm:px-8"
                   >
                     Ouvrir la carte
                   </Link>
                   <Link
                     href="/soumettre"
-                    className="liquid-glass rounded-lg border border-white/20 px-8 py-3 font-medium text-white transition-colors hover:bg-white hover:text-black"
+                    className="liquid-glass rounded-lg border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black sm:px-8"
                   >
                     Partager une idée
                   </Link>
