@@ -101,10 +101,30 @@ export default function Map3D({ points }: Map3DProps) {
     markersRef.current = [];
 
     for (const p of points) {
-      const marker = new maplibregl.Marker({ element: markerElement(p), anchor: "center" })
+      const el = markerElement(p);
+      const popup = new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(popupHtml(p));
+      const marker = new maplibregl.Marker({ element: el, anchor: "center" })
         .setLngLat([p.lng, p.lat])
-        .setPopup(new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(popupHtml(p)))
+        .setPopup(popup)
         .addTo(map);
+
+      // Sur mobile, les touch events ne déclenchent pas toujours le click natif
+      // de MapLibre — on force l'ouverture du popup au touchend si pas de mouvement.
+      let moved = false;
+      el.addEventListener("touchstart", () => { moved = false; }, { passive: true });
+      el.addEventListener("touchmove", () => { moved = true; }, { passive: true });
+      el.addEventListener("touchend", (e) => {
+        if (!moved) {
+          e.preventDefault();
+          e.stopPropagation();
+          marker.togglePopup();
+        }
+      });
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        marker.togglePopup();
+      });
+
       markersRef.current.push(marker);
     }
   }, [points, ready]);
