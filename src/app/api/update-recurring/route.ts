@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!
-);
-
 function nextWeekday(targetDay: number, hour: number): Date {
   const now = new Date();
   let diff = (targetDay - now.getDay() + 7) % 7;
@@ -35,6 +30,11 @@ export async function GET(req: Request) {
   const secret = new URL(req.url).searchParams.get("secret");
   if (secret !== process.env.IMPORT_SECRET)
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_KEY!
+  );
 
   // Récupère tous les événements récurrents dont la date est passée
   const { data: events, error } = await supabase
