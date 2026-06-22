@@ -78,12 +78,20 @@ export default function ListClient() {
               {tab === "promos" ? `${promos.length} bon${promos.length > 1 ? "s" : ""} plan${promos.length > 1 ? "s" : ""}` : `${filtered.length} événement${filtered.length > 1 ? "s" : ""}`} trouvé{filtered.length > 1 || (tab === "promos" && promos.length > 1) ? "s" : ""}
             </p>
           </div>
-          <Link
-            href="/carte"
-            className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm active:scale-95"
-          >
-            🗺️ Voir la carte
-          </Link>
+          <div className="flex shrink-0 flex-col items-end gap-2">
+            <Link
+              href="/carte"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm active:scale-95"
+            >
+              🗺️ Voir la carte
+            </Link>
+            <Link
+              href={tab === "promos" ? "/soumettre?type=promo" : "/soumettre?context=sorties"}
+              className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white active:scale-95"
+            >
+              <span className="text-base leading-none">+</span> Proposer
+            </Link>
+          </div>
         </div>
 
         {/* Onglets temps */}
@@ -133,18 +141,6 @@ export default function ListClient() {
         )}
       </div>
 
-      {/* Bouton proposer */}
-      <div className="flex items-center justify-between border-b border-slate-100 bg-white px-4 py-2.5">
-        <p className="text-sm text-slate-500">
-          {tab === "promos" ? "Une promo à partager ? Bar, magasin, service…" : "Un événement à annoncer ?"}
-        </p>
-        <Link
-          href={tab === "promos" ? "/soumettre?type=promo" : "/soumettre?context=sorties"}
-          className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white active:scale-95"
-        >
-          <span className="text-base leading-none">+</span> Proposer
-        </Link>
-      </div>
 
       {/* Grille */}
       <div className="p-4">

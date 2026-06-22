@@ -52,12 +52,20 @@ export default function EntraideList() {
               {filtered.length} annonce{filtered.length !== 1 ? "s" : ""} trouvée{filtered.length !== 1 ? "s" : ""}
             </p>
           </div>
-          <Link
-            href="/carte"
-            className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm active:scale-95"
-          >
-            🗺️ Voir la carte
-          </Link>
+          <div className="flex shrink-0 flex-col items-end gap-2">
+            <Link
+              href="/carte"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm active:scale-95"
+            >
+              🗺️ Voir la carte
+            </Link>
+            <Link
+              href="/entraide/new"
+              className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white active:scale-95"
+            >
+              <span className="text-base leading-none">+</span> Poster
+            </Link>
+          </div>
         </div>
 
         {/* Filtres catégories */}
@@ -88,16 +96,6 @@ export default function EntraideList() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="flex items-center justify-between border-b border-slate-100 bg-white px-4 py-2.5">
-        <p className="text-sm text-slate-500">Un coup de main à donner ou à recevoir ?</p>
-        <Link
-          href="/entraide/new"
-          className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white active:scale-95"
-        >
-          <span className="text-base leading-none">+</span> Poster
-        </Link>
-      </div>
 
       {/* Grille */}
       <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
