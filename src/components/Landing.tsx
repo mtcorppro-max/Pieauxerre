@@ -5,7 +5,7 @@ import Hero from "./Hero";
 const BLOCS = [
   {
     titre: "Votre événement, sur la carte",
-    texte: "Concert, expo, marché, soirée associative… n'importe qui peut poster son événement en quelques secondes. Il apparaît aussitôt sur la carte, visible par tous les habitants du département.",
+    texte: "Concert, expo, marché, soirée associative… n'importe qui peut poster son événement en quelques secondes. Il apparaît aussitôt sur la carte, visible par tous les habitants du département. Plus besoin de payer une plateforme ou d'avoir une grosse communauté.",
     img: "/EVENEMENT.webp",
   },
   {
@@ -14,9 +14,24 @@ const BLOCS = [
     img: "/COMMERCE.webp",
   },
   {
+    titre: "Le vide-grenier que personne n'a vu passer",
+    texte: "Combien de fois vous avez appris qu'il y avait un marché ou une brocante… le jour même ? L'annonce est passée sur Facebook, mais l'algorithme ne l'a montrée qu'à une poignée de personnes. Sur Yonne+, l'info est là, visible par tous, bien avant le jour J.",
+    img: "/marche.png",
+  },
+  {
     titre: "Un banc cassé, vu et traité",
     texte: "Une photo, une localisation, et la mairie peut enfin savoir où agir. Plus besoin de deviner qui contacter ou comment.",
     img: "/SIGNALEMENT.jpg",
+  },
+  {
+    titre: "Votre avis compte vraiment",
+    texte: "Une idée pour améliorer votre village, partagée et soutenue par d'autres habitants, ça peut réellement voir le jour. Chaque citoyen a le droit à la parole, pas seulement ceux qui ont un micro.",
+    img: "/AUXERRE.png",
+  },
+  {
+    titre: "Remplissez les gradins",
+    texte: "Un match de foot, de basket, peu importe le club. Annoncez-le et il apparaît sur la carte de tous ceux qui cherchent quoi faire ce week-end.",
+    img: "/gradins.jpg",
   },
   {
     titre: "Ce qui se perd, se retrouve",
@@ -27,6 +42,11 @@ const BLOCS = [
     titre: "L'entraide, ça commence ici",
     texte: "Un coup de main pour un déménagement, une tonte de pelouse, un covoiturage. Demander de l'aide à ses voisins, aussi simple qu'un signalement.",
     img: "/entraide.jpg",
+  },
+  {
+    titre: "Réalisé et géré par tout le monde",
+    texte: "Sur les autres plateformes, c'est l'équipe du site qui décide ce qui est affiché. Ici, c'est vous. Chacun peut poster, signaler, proposer ou demander un coup de main. Sans inscription, sans algorithme.",
+    img: "/ensemble.jpg.avif",
   },
 ];
 
