@@ -15,6 +15,9 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* Empêche le navigateur d'intercepter les gestes sur la carte */
+.maplibregl-canvas { touch-action: none; }
+
 /* Slider rayon agenda */
 .rayon-slider {
   -webkit-appearance: none;

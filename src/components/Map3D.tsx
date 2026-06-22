@@ -194,7 +194,7 @@ export default function Map3D({ points }: Map3DProps) {
 
   return (
     <div className="relative h-full w-full">
-      <div ref={containerRef} className="h-full w-full" />
+      <div ref={containerRef} className="h-full w-full" style={{ touchAction: "none" }} />
 
       {/* Bandeau d'aide */}
       <div className="pointer-events-none absolute bottom-3 left-1/2 z-[500] -translate-x-1/2">
