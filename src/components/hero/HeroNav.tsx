@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { label: "Sorties", href: "/liste" },
   { label: "Entraide", href: "/entraide" },
   { label: "Perdus & Trouvés", href: "/trouvailles" },
-  { label: "💡 Idées & signalements", href: "/idees" },
+  { label: "Idées & signalements", href: "/idees" },
 ];
 
 export default function HeroNav() {
