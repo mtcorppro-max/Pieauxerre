@@ -153,7 +153,7 @@ export default function Landing() {
             <div className="relative h-64 w-64 shrink-0 self-end md:h-80 md:w-80">
               <Image
                 src="/mascotte.png"
-                alt="Mascotte PieYonne"
+                alt="Mascotte Yonne+"
                 fill
                 sizes="(min-width: 768px) 320px, 256px"
                 className="object-contain object-bottom drop-shadow-2xl"
@@ -167,7 +167,7 @@ export default function Landing() {
       <footer className="border-t border-slate-100">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-10 text-sm text-slate-500 md:flex-row">
           <div className="flex items-center gap-2 font-semibold text-slate-700">
-            <span aria-hidden>📍</span> PieYonne
+            <span aria-hidden>📍</span> Yonne+
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-6">
             <Link href="/carte" className="hover:text-primary">La carte</Link>

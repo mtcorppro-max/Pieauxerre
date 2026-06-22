@@ -2,7 +2,7 @@ import SubHeader from "@/components/SubHeader";
 import EntraideForm from "@/components/EntraideForm";
 
 export const metadata = {
-  title: "Demander de l'aide — PieYonne",
+  title: "Demander de l'aide — Yonne+",
 };
 
 export default function Page() {

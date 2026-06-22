@@ -3,7 +3,7 @@ import SubHeader from "@/components/SubHeader";
 import SubmitForm from "@/components/SubmitForm";
 
 export const metadata = {
-  title: "Partager — PieYonne",
+  title: "Partager — Yonne+",
 };
 
 export default function Page() {

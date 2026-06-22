@@ -84,7 +84,7 @@ export async function GET(req: Request) {
 
   try {
     const html = await fetch("https://my89.fr/sortir-dans-l-yonne.php", {
-      headers: { "User-Agent": "PieYonne/1.0 (agenda citoyen Yonne)" },
+      headers: { "User-Agent": "Yonne+/1.0 (agenda citoyen Yonne)" },
     }).then((r) => r.text());
 
     const $ = cheerio.load(html);

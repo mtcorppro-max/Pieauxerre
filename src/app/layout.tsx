@@ -15,14 +15,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "PieYonne — ce qui se passe ce soir près de chez vous",
+  title: "Yonne+ — ce qui se passe ce soir près de chez vous",
   description:
     "La carte citoyenne d'Auxerre : événements, bons plans des bars et restos, commerces ouverts, et signalements pour améliorer la ville. Gratuit, sans pub.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "PieYonne",
+    title: "Yonne+",
   },
   icons: {
     icon: "/icons/icon.svg",

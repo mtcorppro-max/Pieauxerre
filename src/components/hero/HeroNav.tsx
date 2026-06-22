@@ -19,7 +19,7 @@ export default function HeroNav() {
       <nav className="liquid-glass rounded-xl px-4 py-2">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-2xl font-semibold tracking-tight">
-            PieYonne
+            Yonne+
           </Link>
 
           {/* Liens desktop */}

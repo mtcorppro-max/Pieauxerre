@@ -9,7 +9,7 @@ if (!url || !anonKey) {
   // Avertissement clair en dev plutôt qu'une erreur cryptique plus loin.
   // eslint-disable-next-line no-console
   console.warn(
-    "[PieYonne] NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY manquants. " +
+    "[Yonne+] NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY manquants. " +
       "Copiez .env.local.example en .env.local et renseignez vos clés."
   );
 }

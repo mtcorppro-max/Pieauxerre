@@ -5,7 +5,7 @@ import IdeePageClient from "@/components/IdeePageClient";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Idées & signalements — PieYonne",
+  title: "Idées & signalements — Yonne+",
 };
 
 export default function Page() {

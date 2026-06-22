@@ -1,7 +1,7 @@
 import SubHeader from "@/components/SubHeader";
 import TrouvailleForm from "@/components/TrouvailleForm";
 
-export const metadata = { title: "Signaler un animal ou objet — PieYonne" };
+export const metadata = { title: "Signaler un animal ou objet — Yonne+" };
 
 export default function Page() {
   return (

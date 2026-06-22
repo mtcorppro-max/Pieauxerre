@@ -1,4 +1,4 @@
-// Types du domaine PieYonne
+// Types du domaine Yonne+
 
 export type PoiCategorie = "restaurant" | "bar" | "fast_food" | "commerce";
 export type EventCategorie = "musique" | "sport" | "marche" | "culture" | "bar" | "autre";

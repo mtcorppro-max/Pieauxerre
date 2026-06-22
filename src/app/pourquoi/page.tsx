@@ -3,7 +3,7 @@ import Image from "next/image";
 import SubHeader from "@/components/SubHeader";
 
 export const metadata = {
-  title: "Pourquoi PieYonne ?",
+  title: "Pourquoi Yonne+ ?",
   description: "Ce qu'on essaie de changer pour notre ville.",
 };
 
@@ -58,7 +58,7 @@ const BLOCS = [
     titre: "Le vide-grenier que personne n'a vu passer",
     texte: [
       "Combien de fois vous avez appris qu'il y avait un marché ou une brocante... le jour même ? L'annonce est passée sur Facebook, mais l'algorithme ne l'a montrée qu'à une poignée de personnes.",
-      "Sur PieYonne, n'importe quel habitant peut ajouter le vide-grenier ou le marché de sa commune. L'info est là, visible par tous, bien avant le jour J.",
+      "Sur Yonne+, n'importe quel habitant peut ajouter le vide-grenier ou le marché de sa commune. L'info est là, visible par tous, bien avant le jour J.",
     ],
     img: "/marche.png",
     alt: "Marché et brocante dans l'Yonne",
@@ -95,12 +95,12 @@ const BLOCS = [
 export default function Page() {
   return (
     <div className="min-h-screen bg-white">
-      <SubHeader title="Pourquoi PieYonne ?" />
+      <SubHeader title="Pourquoi Yonne+ ?" />
 
       {/* Intro */}
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
         <p className="text-lg leading-relaxed text-slate-600">
-          Les réseaux sociaux connectent les gens entre eux. PieYonne connecte les gens à leur ville.
+          Les réseaux sociaux connectent les gens entre eux. Yonne+ connecte les gens à leur ville.
           Voici pourquoi c'est différent.
         </p>
       </div>

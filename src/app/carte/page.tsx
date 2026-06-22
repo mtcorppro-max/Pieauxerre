@@ -5,7 +5,7 @@ import HomeClient from "@/components/HomeClient";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "La carte — PieYonne",
+  title: "La carte — Yonne+",
 };
 
 export default function Page() {

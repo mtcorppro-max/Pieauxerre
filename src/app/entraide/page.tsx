@@ -4,7 +4,7 @@ import EntraideList from "@/components/EntraideList";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Entraide à Auxerre — PieYonne",
+  title: "Entraide à Auxerre — Yonne+",
 };
 
 export default function Page() {

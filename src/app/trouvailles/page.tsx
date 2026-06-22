@@ -2,7 +2,7 @@ import SubHeader from "@/components/SubHeader";
 import TrouvaillesClient from "@/components/TrouvaillesClient";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Animaux & objets perdus/trouvés — PieYonne" };
+export const metadata = { title: "Animaux & objets perdus/trouvés — Yonne+" };
 
 export default function Page() {
   return (

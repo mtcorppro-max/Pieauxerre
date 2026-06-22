@@ -4,7 +4,7 @@ import SanteClient from "@/components/SanteClient";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Pharmacies & Vétérinaires — PieYonne",
+  title: "Pharmacies & Vétérinaires — Yonne+",
 };
 
 export default function Page() {
