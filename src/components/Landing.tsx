@@ -2,128 +2,61 @@ import Link from "next/link";
 import Image from "next/image";
 import Hero from "./Hero";
 
-// Site vitrine : page d'accueil épurée qui présente l'application.
-// Hero plein écran (photo + liquid glass) suivi des sections de présentation.
-
-const FEATURES = [
+const BLOCS = [
   {
-    emoji: "🎵",
-    titre: "Événements",
-    texte: "Concerts, brocantes, matchs… Voyez ce qui se passe ce soir et cette semaine, près de chez vous.",
+    titre: "Votre événement, sur la carte",
+    texte: "Concert, expo, marché, soirée associative… n'importe qui peut poster son événement en quelques secondes. Il apparaît aussitôt sur la carte, visible par tous les habitants du département.",
     img: "/EVENEMENT.webp",
   },
   {
-    emoji: "🔥",
-    titre: "Bons plans",
-    texte: "Retrouvez ici tous les bons plans de chaque commerce, que ce soit un restaurant, un magasin, une vente ou autre. Ils s'affichent en temps réel et disparaissent à la fin.",
-    img: "/BONPLAN.jpg",
+    titre: "La même visibilité pour tous",
+    texte: "Le petit commerçant sans communauté et le bar d'en face avec 2 000 abonnés sont au même endroit sur la carte. Votre promo du jour mérite d'être vue, peu importe votre nombre de followers.",
+    img: "/COMMERCE.webp",
   },
   {
-    emoji: "🛍️",
-    titre: "Marchés & Vide-greniers",
-    texte: "Marché de producteurs, brocante, vide-grenier… Chaque habitant peut ajouter l'événement de sa commune. L'info est là bien avant le jour J, visible par tous.",
-    img: "/marche.png",
-  },
-  {
-    emoji: "🚧",
-    titre: "Signalements & idées",
-    texte: "Un lampadaire cassé, un banc qui manque ? Signalez, proposez, votez. La ville s'améliore ensemble.",
+    titre: "Un banc cassé, vu et traité",
+    texte: "Une photo, une localisation, et la mairie peut enfin savoir où agir. Plus besoin de deviner qui contacter ou comment.",
     img: "/SIGNALEMENT.jpg",
   },
   {
-    emoji: "🤝",
-    titre: "Entraide",
-    texte: "Tondeuse, déménagement, covoiturage… Postez une annonce en 30 secondes et un voisin vous répond.",
-    img: "/entraide.jpg",
-  },
-  {
-    emoji: "🐕",
-    titre: "Perdus & Trouvés",
-    texte: "Un chien vu au bord de la route, un portefeuille trouvé… Signalez en photo et les Auxerrois vous aident.",
+    titre: "Ce qui se perd, se retrouve",
+    texte: "Objets comme animaux perdus sont visibles par tout le quartier, ami ou pas, abonné ou pas. Et celui qui les retrouve sait où le signaler.",
     img: "/icons/trouver.png",
   },
-];
-
-
-const STEPS = [
-  { n: "1", titre: "Ouvrez la carte", texte: "Aucun compte, aucune installation obligatoire. Tout est là, tout de suite." },
-  { n: "2", titre: "Repérez près de vous", texte: "Les marqueurs vous montrent les événements du jour et les bons plans actifs." },
-  { n: "3", titre: "Partagez en 30 s", texte: "Un événement, une promo, un signalement ou une idée : un formulaire, c'est tout." },
+  {
+    titre: "L'entraide, ça commence ici",
+    texte: "Un coup de main pour un déménagement, une tonte de pelouse, un covoiturage. Demander de l'aide à ses voisins, aussi simple qu'un signalement.",
+    img: "/entraide.jpg",
+  },
 ];
 
 export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Hero plein écran (photo d'Auxerre + liquid glass) */}
       <Hero />
 
-      {/* Fonctionnalités */}
-      <section id="fonctionnalites" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-            Ce que vous y trouvez
-          </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-            Six raisons d'ouvrir l'app chaque jour
-          </h2>
-        </div>
+      {/* Intro */}
+      <div className="mx-auto max-w-2xl px-6 py-16 text-center">
+        <p className="text-lg leading-relaxed text-slate-500">
+          Les réseaux sociaux connectent les gens entre eux.{" "}
+          <span className="font-semibold text-slate-900">Yonne+ connecte les gens à leur ville.</span>
+        </p>
+      </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <article
-              key={f.titre}
-              className="group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-card"
-            >
-              {/* Photo de couverture + titre en surimpression */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden">
-                <Image
-                  src={f.img}
-                  alt={f.titre}
-                  fill
-                  sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 flex items-center gap-3 p-5">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/90 text-2xl shadow-soft backdrop-blur">
-                    {f.emoji}
-                  </span>
-                  <h3 className="text-2xl font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                    {f.titre}
-                  </h3>
-                </div>
-              </div>
-              <p className="p-6 leading-relaxed text-slate-600">{f.texte}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Comment ça marche */}
-      <section id="etapes" className="border-y border-slate-100 bg-slate-50">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Simple, vraiment
-            </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-              Compris en 10 secondes
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {STEPS.map((s) => (
-              <div key={s.n}>
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
-                  {s.n}
-                </div>
-                <h3 className="mt-5 text-xl font-semibold">{s.titre}</h3>
-                <p className="mt-2 leading-relaxed text-slate-600">{s.texte}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Blocs alternés */}
+      <div className="divide-y divide-slate-100">
+        {BLOCS.map((b, i) => (
+          <section key={b.titre} className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-20 lg:px-12">
+            <div className={["relative h-64 overflow-hidden rounded-3xl shadow-lg lg:h-80", i % 2 === 1 ? "lg:order-last" : ""].join(" ")}>
+              <Image src={b.img} alt={b.titre} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            </div>
+            <div className={i % 2 === 1 ? "lg:order-first" : ""}>
+              <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-900 md:text-3xl">{b.titre}</h2>
+              <p className="mt-4 leading-relaxed text-slate-600">{b.texte}</p>
+            </div>
+          </section>
+        ))}
+      </div>
 
       {/* Bandeau gratuit / CTA final */}
       <section id="gratuit" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
