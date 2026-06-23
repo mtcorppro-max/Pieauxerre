@@ -37,14 +37,14 @@ export default function HeroSlideshow() {
       ))}
 
       {/* Nom du lieu — haut droite sous la navbar */}
-      <div className="absolute top-[68px] right-4 z-10">
+      <div className="absolute top-[84px] right-4 z-10">
         <span className="rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-sm">
           📍 {SLIDES[current].label}
         </span>
       </div>
 
-      {/* Indicateurs de slide — bas centré */}
-      <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+      {/* Indicateurs de slide — bas centré, masqués sur mobile */}
+      <div className="absolute bottom-6 left-1/2 z-10 hidden md:flex -translate-x-1/2 gap-1.5">
         {SLIDES.map((_, i) => (
           <button
             key={i}
