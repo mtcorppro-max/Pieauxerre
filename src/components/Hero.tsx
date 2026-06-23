@@ -36,7 +36,7 @@ export default function Hero() {
 
               <FadeIn delay={800} duration={1000}>
                 <p className="mb-4 max-w-xl text-sm text-gray-200 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg">
-                  Événements, bons plans, marchés, idées — tout sur une seule carte.
+                  Événements, bons plans, marchés, idées. Tout sur une seule carte.
                 </p>
               </FadeIn>
 
@@ -52,7 +52,7 @@ export default function Hero() {
                     href="/soumettre"
                     className="liquid-glass rounded-lg border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black sm:px-8"
                   >
-                    Partager une idée
+                    Partager
                   </Link>
                 </div>
               </FadeIn>

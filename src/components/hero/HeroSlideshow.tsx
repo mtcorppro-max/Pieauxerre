@@ -36,26 +36,28 @@ export default function HeroSlideshow() {
         />
       ))}
 
-      {/* Indicateurs de slide + nom du lieu */}
-      <div className="absolute bottom-6 right-6 z-10 flex flex-col items-end gap-2">
+      {/* Nom du lieu — haut droite sous la navbar */}
+      <div className="absolute top-[68px] right-4 z-10">
         <span className="rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-sm">
           📍 {SLIDES[current].label}
         </span>
-        <div className="flex gap-1.5">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={SLIDES[i].label}
-              onClick={() => setCurrent(i)}
-              className="h-1.5 rounded-full transition-all duration-500"
-              style={{
-                width: i === current ? "1.5rem" : "0.375rem",
-                background: i === current ? "white" : "rgba(255,255,255,0.4)",
-              }}
-            />
-          ))}
-        </div>
+      </div>
+
+      {/* Indicateurs de slide — bas centré */}
+      <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={SLIDES[i].label}
+            onClick={() => setCurrent(i)}
+            className="h-1.5 rounded-full transition-all duration-500"
+            style={{
+              width: i === current ? "1.5rem" : "0.375rem",
+              background: i === current ? "white" : "rgba(255,255,255,0.4)",
+            }}
+          />
+        ))}
       </div>
     </>
   );
