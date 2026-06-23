@@ -82,7 +82,7 @@ function NavContent() {
 
 export default function BottomNav() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname.startsWith("/admin")) return null;
 
   return (
     <Suspense fallback={null}>
