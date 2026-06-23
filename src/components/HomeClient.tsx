@@ -40,6 +40,7 @@ export default function HomeClient() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [filterOpen, setFilterOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const toggleBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -68,16 +69,24 @@ export default function HomeClient() {
     return () => { cancelled = true; };
   }, []);
 
-  // Ferme le panneau si on clique dehors
+  // Ferme le panneau si on clique dehors (en ignorant le bouton qui l'ouvre)
   useEffect(() => {
     if (!filterOpen) return;
     function handleClick(e: MouseEvent) {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        panelRef.current && !panelRef.current.contains(target) &&
+        toggleBtnRef.current && !toggleBtnRef.current.contains(target)
+      ) {
         setFilterOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    // pointerdown couvre souris + tactile ; délai pour ne pas attraper le clic d'ouverture
+    const id = setTimeout(() => document.addEventListener("pointerdown", handleClick), 0);
+    return () => {
+      clearTimeout(id);
+      document.removeEventListener("pointerdown", handleClick);
+    };
   }, [filterOpen]);
 
   const counts = useMemo(() => {
@@ -127,6 +136,7 @@ export default function HomeClient() {
 
           {/* Bouton filtres (3 barres) */}
           <button
+            ref={toggleBtnRef}
             type="button"
             onClick={() => setFilterOpen((v) => !v)}
             className="relative flex h-11 grow items-center gap-2 rounded-2xl bg-white/95 px-3 shadow-card backdrop-blur active:scale-95"
@@ -160,7 +170,7 @@ export default function HomeClient() {
         {filterOpen && (
           <div
             ref={panelRef}
-            className="mt-2 overflow-hidden rounded-2xl bg-white/98 shadow-card backdrop-blur"
+            className="pointer-events-auto mt-2 overflow-hidden rounded-2xl bg-white/98 shadow-card backdrop-blur"
           >
             <div className="grid grid-cols-2 gap-2 p-3">
               {MAP_FILTERS.map((f) => {
