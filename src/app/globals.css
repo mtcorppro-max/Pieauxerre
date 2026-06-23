@@ -15,8 +15,11 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Empêche le navigateur d'intercepter les gestes sur la carte */
-.maplibregl-canvas { touch-action: none; }
+/* Empêche le navigateur d'intercepter les gestes sur la carte.
+   touch-action n'étant pas héritée, on la pose aussi sur les marqueurs :
+   sinon démarrer un glissement sur un marqueur bloque le déplacement. */
+.maplibregl-canvas,
+.maplibregl-marker { touch-action: none; }
 
 /* Pastille de regroupement (cluster) */
 .cluster-marker {
