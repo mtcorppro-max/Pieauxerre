@@ -18,6 +18,24 @@
 /* Empêche le navigateur d'intercepter les gestes sur la carte */
 .maplibregl-canvas { touch-action: none; }
 
+/* Pastille de regroupement (cluster) */
+.cluster-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
 /* Slider rayon agenda */
 .rayon-slider {
   -webkit-appearance: none;

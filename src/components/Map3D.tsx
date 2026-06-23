@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import maplibregl, { type Map as MlMap, type Marker as MlMarker } from "maplibre-gl";
+import Supercluster from "supercluster";
 import {
   AUXERRE_BOUNDS,
   AUXERRE_CENTER,
@@ -27,6 +28,14 @@ function markerElement(point: MapPoint): HTMLElement {
   el.className = classes.join(" ");
   el.textContent = point.emoji;
   el.setAttribute("aria-hidden", "true");
+  return el;
+}
+
+// Pastille de regroupement (plusieurs activités au même endroit)
+function clusterElement(count: number): HTMLElement {
+  const el = document.createElement("div");
+  el.className = "cluster-marker";
+  el.textContent = String(count);
   return el;
 }
 
@@ -60,10 +69,15 @@ interface Map3DProps {
   points: MapPoint[];
 }
 
+type ClusterProps = { cluster: true; cluster_id: number; point_count: number };
+type LeafProps = { cluster?: false; point: MapPoint };
+
 export default function Map3D({ points }: Map3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
   const markersRef = useRef<MlMarker[]>([]);
+  const clusterRef = useRef<Supercluster<LeafProps, ClusterProps> | null>(null);
+  const renderRef = useRef<() => void>(() => {});
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -87,47 +101,82 @@ export default function Map3D({ points }: Map3DProps) {
 
     map.on("load", () => setReady(true));
 
+    // Recalcule les marqueurs/pastilles à chaque déplacement ou zoom
+    const onMove = () => renderRef.current();
+    map.on("moveend", onMove);
+    map.on("zoomend", onMove);
+
     return () => {
+      map.off("moveend", onMove);
+      map.off("zoomend", onMove);
       map.remove();
       mapRef.current = null;
     };
   }, []);
 
+  // (Re)construit l'index de clustering quand les points changent
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
 
-    markersRef.current.forEach((m) => m.remove());
-    markersRef.current = [];
+    const index = new Supercluster<LeafProps, ClusterProps>({
+      radius: 48,
+      maxZoom: 16,
+    });
+    index.load(
+      points.map((p) => ({
+        type: "Feature" as const,
+        properties: { point: p },
+        geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
+      }))
+    );
+    clusterRef.current = index;
 
-    // Beaucoup d'événements partagent le centre de leur commune : on éventaille
-    // les marqueurs superposés en spirale pour qu'ils soient tous cliquables.
-    const seen = new Map<string, number>();
-    const COS_LAT = Math.cos((AUXERRE_CENTER[0] * Math.PI) / 180);
+    // Dessine les marqueurs visibles pour la vue courante
+    const render = () => {
+      const m = mapRef.current;
+      const idx = clusterRef.current;
+      if (!m || !idx) return;
 
-    for (const p of points) {
-      const key = `${p.lng.toFixed(4)},${p.lat.toFixed(4)}`;
-      const idx = seen.get(key) ?? 0;
-      seen.set(key, idx + 1);
+      markersRef.current.forEach((mk) => mk.remove());
+      markersRef.current = [];
 
-      let lng = p.lng;
-      let lat = p.lat;
-      if (idx > 0) {
-        const angle = idx * 2.399963; // angle d'or → répartition régulière
-        const radius = 0.0011 * Math.sqrt(idx);
-        lng += (radius / COS_LAT) * Math.cos(angle);
-        lat += radius * Math.sin(angle);
+      const b = m.getBounds();
+      const bbox: [number, number, number, number] = [
+        b.getWest(), b.getSouth(), b.getEast(), b.getNorth(),
+      ];
+      const zoom = Math.round(m.getZoom());
+      const clusters = idx.getClusters(bbox, zoom);
+
+      for (const c of clusters) {
+        const [lng, lat] = c.geometry.coordinates;
+        const props = c.properties;
+
+        if ("cluster" in props && props.cluster) {
+          const el = clusterElement(props.point_count);
+          el.addEventListener("click", () => {
+            const expansion = idx.getClusterExpansionZoom(props.cluster_id);
+            m.easeTo({ center: [lng, lat], zoom: Math.min(expansion, MAX_ZOOM), duration: 500 });
+          });
+          const marker = new maplibregl.Marker({ element: el, anchor: "center" })
+            .setLngLat([lng, lat])
+            .addTo(m);
+          markersRef.current.push(marker);
+        } else {
+          const p = props.point;
+          const el = markerElement(p);
+          const popup = new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(popupHtml(p));
+          const marker = new maplibregl.Marker({ element: el, anchor: "center" })
+            .setLngLat([lng, lat])
+            .setPopup(popup)
+            .addTo(m);
+          markersRef.current.push(marker);
+        }
       }
+    };
 
-      const el = markerElement(p);
-      const popup = new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(popupHtml(p));
-      const marker = new maplibregl.Marker({ element: el, anchor: "center" })
-        .setLngLat([lng, lat])
-        .setPopup(popup)
-        .addTo(map);
-
-      markersRef.current.push(marker);
-    }
+    renderRef.current = render;
+    render();
   }, [points, ready]);
 
   return (
